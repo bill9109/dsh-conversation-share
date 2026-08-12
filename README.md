@@ -101,20 +101,6 @@ DSH_CHECKOUT=/path/to/dsh-checkout pnpm run build
 
 > ⚠️ 仓库为 PRIVATE，请勿改为 public。
 
-## 开发说明
-
-- **架构**：`dsh.bundle`（cordis.patch.yml 插入插件节点）+ `dsh.client`（浏览器 bundle，经 `window.__ModuleLoader__.load` 加载）。浏览器半部纯 DOM 操作，不修改 DSH 源码。
-- **调试**：`window.__dshShareDebug.captureRange(params)` 暴露截图管线（浏览器控制台可直接调用）。
-- **已解决的坑**（改动时注意）：
-  - html-to-image 会把节点完整计算样式复制进 SVG 克隆 → 离屏 wrapper 的 `position:fixed; left:-100000px` 会导致内容空白；对克隆用 `style: {position:'static', left:0, top:0}` 中和。
-  - 对话流是 flex column + gap:16px → 截图克隆容器必须镜像 flex 布局（否则行间距丢失）。
-  - 品牌 SVG 的 `var()` fill 在隔离 SVG 图片中不解析 → 需从原始 DOM 元素读取计算色并烘焙；`clip-path: url(#...)` 引用在 SVG 图片中失效 → 克隆时移除。
-  - 吸附目标坐标用**流内坐标**（rect.top + scrollTop），滚动不影响；块级吸附渲染时锚定元素实时 rect。
-  - 吸附后的把手线放进滚动内容层（flow 坐标）随内容原生滚动，触控板惯性滚动不抖；把手 pill 留在固定层保持视口内可拖。
-  - 范围外的文字变灰用 CSS Custom Highlight API（`::highlight`），只读 DOM 不改结构，不与吸附收集器冲突。
-  - `currentRange` 的结束元素归属条件曾写反导致长范围导出只剩最后几行（已修）。
-- **性能**：吸附目标在激活/内容变更时重建；拖拽每帧二分查找最近目标；边缘滚动用 rAF + 帧时距缩放（ProMotion 120Hz 不翻倍）。
-
 ## License
 
 BSD-3-Clause（vendored html-to-image 为 MIT，见 `src/vendor/html-to-image/LICENSE`）。
