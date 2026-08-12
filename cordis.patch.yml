@@ -1,0 +1,10 @@
+# dsh-conversation-share bundle patch: insert the conversation-share plugin.
+#
+# Applied when this bundle appears in a profile's dsh.profile.bundles list.
+# The host half (package root) is a no-op plugin node; the browser half
+# (dsh.client) is discovered automatically through the package's
+# dsh.client declaration + exports["./client"].
+
+- insert:
+    - id: conversation-share
+      name: '@dsh-external/dsh-conversation-share'
