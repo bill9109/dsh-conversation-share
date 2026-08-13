@@ -56,7 +56,7 @@ DSH_CHECKOUT=/path/to/dsh-checkout pnpm run build
 用标准的 `dsh plugin` 命令安装到 profile（无需改源码、无需手动编辑 package.json）：
 
 ```sh
-# 从仓库安装（发布/别人使用）
+# 从仓库安装
 dsh plugin --profile web add github:dsh-external/dsh-conversation-share
 
 # 或指定分支/提交
