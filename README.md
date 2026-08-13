@@ -1,7 +1,5 @@
 # dsh-conversation-share — DSH 对话分享截图插件
 
-> ⚠️ **本仓库为 PRIVATE（私有）。** 请勿把仓库可见性改为 public，也不要外泄内测版本。
-
 把 DeepSeek Harness 对话流中选中的一段，渲染成带品牌尾部的 PNG 长图分享出去。
 
 <img width="1512" height="745" alt="image" src="https://github.com/user-attachments/assets/8f7928d4-f6a0-493f-88de-a5d844b9d38c" />
@@ -76,7 +74,6 @@ dsh plugin --profile web add /path/to/your/dsh-conversation-share
 
 安装后**重启 web**，浏览器**硬刷新**（Cmd+Shift+R）——旧 tab 不会加载新 bundle。
 
-> 私有仓库安装需要 git 认证：先 `gh auth login` 再 `gh auth setup-git`（HTTPS 走 gh 凭据），或配置 GitHub Personal Access Token。
 
 ## 卸载
 
@@ -102,8 +99,6 @@ dsh plugin --profile web remove @dsh-external/dsh-conversation-share
    git commit -m "release v0.1.x"
    git push origin main
    ```
-
-> ⚠️ 仓库为 PRIVATE，请勿改为 public。
 
 ## License
 
