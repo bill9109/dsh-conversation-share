@@ -7,4 +7,4 @@
 
 - insert:
     - id: conversation-share
-      name: '@dsh-external/dsh-conversation-share'
+      name: '@bill9109/dsh-conversation-share'

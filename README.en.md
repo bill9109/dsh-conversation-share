@@ -78,7 +78,7 @@ After installing, **restart web** and **hard-refresh** the browser (Cmd+Shift+R)
 ## Uninstall
 
 ```sh
-dsh plugin --profile web remove @dsh-external/dsh-conversation-share
+dsh plugin --profile web remove @bill9109/dsh-conversation-share
 ```
 
 Internally the command runs `pnpm remove <pkg>` in the profile directory and removes it from `dsh.profile.bundles`. After uninstalling, **restart web** and **hard-refresh** the browser.

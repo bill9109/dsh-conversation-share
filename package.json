@@ -1,5 +1,5 @@
 {
-  "name": "@dsh-external/dsh-conversation-share",
+  "name": "@bill9109/dsh-conversation-share",
   "version": "0.1.0",
   "description": "Select a range of a DSH conversation and share it as a PNG long image",
   "type": "module",
