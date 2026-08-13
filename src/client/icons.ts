@@ -27,6 +27,44 @@ export function gripIconSVG(): string {
 
 const FONT_STACK = "-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif"
 
+
+/** Small share icon sized like the Session log button's trailing glyph. */
+export function headerShareIconSVG(): string {
+  return [
+    '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"',
+    ' stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">',
+    '<path d="M12 3v12"/>',
+    '<path d="m7 8 5-5 5 5"/>',
+    '<path d="M5 15v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/>',
+    '</svg>',
+  ].join('')
+}
+
+/**
+ * The header share pill, styled like the Session log button: 13px text on a
+ * transparent pill with a hairline border.
+ */
+export function headerShareButtonStyle(): string {
+  const c = themeColors()
+  return [
+    'display:inline-flex;align-items:center;gap:5px;',
+    'height:32px;box-sizing:border-box;padding:0 12px;',
+    'border:1px solid var(--dsw-alias-border-l1, rgba(0, 0, 0, 0.1));',
+    'border-radius:18px;background:transparent;',
+    'color:var(--dsw-alias-label-primary, ' + c.labelPrimary + ');',
+    'font:400 13px/20px ' + FONT_STACK + ';cursor:pointer;flex:none;',
+  ].join('')
+}
+
+/** Active (share mode on) variant: primary border + tinted fill + primary ink. */
+export function headerShareButtonActiveStyle(): string {
+  const c = themeColors()
+  return [
+    'border-color:var(--dsw-alias-state-business-primary, ' + c.businessPrimary + ');',
+    'background:color-mix(in srgb, var(--dsw-alias-state-business-primary, ' + c.businessPrimary + ') 8%, transparent);',
+    'color:var(--dsw-alias-state-business-primary, ' + c.businessPrimary + ');',
+  ].join('')
+}
 /** The tab-row share icon button. */
 export function shareButtonStyle(): string {
   const c = themeColors()
@@ -38,28 +76,28 @@ export function shareButtonStyle(): string {
   ].join('')
 }
 
-/** Ghost 取消 button. */
+/** Ghost 取消 button — same pill shape as the share button. */
 export function ghostButtonStyle(): string {
   const c = themeColors()
   return [
     'display:inline-flex;align-items:center;justify-content:center;',
-    'height:20px;box-sizing:border-box;padding:0 12px;',
-    'border:1px solid var(--dsw-alias-border-l2, ' + c.borderL2 + ');',
-    'border-radius:6px;background:transparent;color:var(--dsw-alias-label-secondary, ' + c.labelSecondary + ');',
-    'font:500 13px/16px ' + FONT_STACK + ';cursor:pointer;flex:none;',
+    'height:32px;box-sizing:border-box;padding:0 12px;',
+    'border:1px solid var(--dsw-alias-border-l1, rgba(0, 0, 0, 0.1));',
+    'border-radius:18px;background:transparent;color:var(--dsw-alias-label-secondary, ' + c.labelSecondary + ');',
+    'font:400 13px/20px ' + FONT_STACK + ';cursor:pointer;flex:none;',
   ].join('')
 }
 
-/** Primary 确认 button. */
+/** Primary 确认 button — pill shape, same box as the share/ghost buttons. */
 export function primaryButtonStyle(): string {
   const c = themeColors()
   return [
     'display:inline-flex;align-items:center;justify-content:center;',
-    'height:20px;box-sizing:border-box;padding:0 12px;',
-    // A same-color border keeps it the same box height as the ghost button.
+    'height:32px;box-sizing:border-box;padding:0 12px;',
+    // A same-color border keeps the box identical to the ghost button.
     'border:1px solid var(--dsw-alias-state-business-primary, ' + c.businessPrimary + ');',
-    'border-radius:6px;background:var(--dsw-alias-state-business-primary, ' + c.businessPrimary + ');color:#ffffff;',
-    'font:500 13px/16px ' + FONT_STACK + ';cursor:pointer;flex:none;',
+    'border-radius:18px;background:var(--dsw-alias-state-business-primary, ' + c.businessPrimary + ');color:#ffffff;',
+    'font:400 13px/20px ' + FONT_STACK + ';cursor:pointer;flex:none;',
   ].join('')
 }
 

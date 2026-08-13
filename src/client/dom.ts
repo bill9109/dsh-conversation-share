@@ -20,6 +20,14 @@ export function findComposerSeat(scrollport: HTMLElement): HTMLElement | null {
   return scrollport.querySelector<HTMLElement>('[data-composer-seat]')
 }
 
+
+/** The header's right-end utilities strip (home of the Session log button). */
+export function findHeaderUtilities(): HTMLElement | null {
+  const log = Array.from(document.querySelectorAll<HTMLElement>('header button')).find(
+    b => /session\s*log/i.test((b.textContent ?? '').trim()) && (b.textContent ?? '').trim().length < 30,
+  )
+  return log?.parentElement ?? null
+}
 /** Ensure the 对话 tab is active (the share flow operates on the chat view). */
 export function switchToChatTab(): void {
   const tablist = findTablist()

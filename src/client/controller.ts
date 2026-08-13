@@ -5,9 +5,10 @@
 import type { ClientContext } from '@deepseek-ai/dsh-client-runtime/client'
 import { findBrandSvg } from './brand.ts'
 import { captureRange } from './capture.ts'
-import { findFlowList, findScrollport, findTablist, switchToChatTab } from './dom.ts'
+import { findFlowList, findHeaderUtilities, findScrollport, switchToChatTab } from './dom.ts'
 import {
-  ghostButtonStyle, primaryButtonStyle, shareButtonStyle, shareIconSVG,
+  ghostButtonStyle, headerShareButtonActiveStyle, headerShareButtonStyle,
+  headerShareIconSVG, primaryButtonStyle,
 } from './icons.ts'
 import { MarkerOverlay } from './markers.ts'
 import { PreviewModal } from './modal.ts'
@@ -20,7 +21,9 @@ export class ShareController {
   private readonly ctx: ClientContext
   private readonly modal = new PreviewModal()
   private observer: MutationObserver | null = null
-  private tablist: HTMLElement | null = null
+  private utilities: HTMLElement | null = null
+  /** The Session log button's computed border, copied so the share pill matches. */
+  private logBorder = ''
   private actionsRow: HTMLDivElement | null = null
   private shareButton: HTMLButtonElement | null = null
   private cancelButton: HTMLButtonElement | null = null
@@ -52,36 +55,43 @@ export class ShareController {
 
   private syncButton(): void {
     if (this.disposed) return
-    const tablist = findTablist()
-    if (tablist === null) {
+    const utilities = findHeaderUtilities()
+    if (utilities === null) {
       if (this.active) this.deactivate()
       this.teardownButton()
       return
     }
-    if (this.tablist === tablist && this.shareButton !== null && tablist.contains(this.shareButton)) return
-    // The header (and its tablist) was re-created — likely a session switch.
+    if (this.utilities === utilities && this.shareButton !== null && utilities.contains(this.shareButton)) return
+    // The header was re-created — likely a session switch.
     if (this.active) this.deactivate()
     this.teardownButton()
-    this.buildButton(tablist)
+    this.buildButton(utilities)
   }
 
-  private buildButton(tablist: HTMLElement): void {
+  private buildButton(utilities: HTMLElement): void {
     const row = document.createElement('div')
     row.className = ACTIONS_CLASS
-    // Top-align with the tab labels (tabs sit at the top of the row with an
-    // 11px active-bar zone below); no top padding so the button content sits on
-    // the same baseline as the tab text.
-    row.style.cssText = 'display:flex;align-items:flex-start;gap:6px;margin-left:auto;flex:none;'
+    row.style.cssText = 'display:flex;align-items:center;gap:6px;flex:none;'
     const share = document.createElement('button')
     share.type = 'button'
     share.title = '分享对话截图'
     share.setAttribute('aria-label', '分享对话截图')
-    share.style.cssText = shareButtonStyle()
-    share.innerHTML = shareIconSVG()
+    share.style.cssText = headerShareButtonStyle()
+    share.innerHTML = headerShareIconSVG() + '<span>分享</span>'
     share.addEventListener('click', () => this.toggle())
     row.append(share)
-    tablist.append(row)
-    this.tablist = tablist
+    // Match the Session log button's hairline border exactly (theme-agnostic:
+    // copy its computed value so both buttons always agree).
+    const logBtn = Array.from(utilities.querySelectorAll('button')).find(
+      b => /session\s*log/i.test((b.textContent ?? '').trim()),
+    )
+    if (logBtn !== undefined) {
+      this.logBorder = getComputedStyle(logBtn).border
+      share.style.border = this.logBorder
+    }
+    // Sit to the LEFT of the Session log button (the strip's first child).
+    utilities.insertBefore(row, utilities.firstChild)
+    this.utilities = utilities
     this.actionsRow = row
     this.shareButton = share
   }
@@ -92,7 +102,7 @@ export class ShareController {
     this.shareButton = null
     this.cancelButton = null
     this.confirmButton = null
-    this.tablist = null
+    this.utilities = null
   }
 
   // ---- mode switching ---------------------------------------------------
@@ -132,11 +142,15 @@ export class ShareController {
   private setShareActive(active: boolean): void {
     const share = this.shareButton
     if (share === null) return
+    // The share pill gets a distinct active look (primary border + tint) so
+    // the toggle state reads at a glance.
     if (active) {
-      share.style.color = 'var(--dsw-alias-state-business-primary, #3964fe)'
+      share.style.cssText = headerShareButtonStyle() + headerShareButtonActiveStyle()
       share.setAttribute('aria-pressed', 'true')
     } else {
-      share.style.color = ''
+      share.style.cssText = headerShareButtonStyle()
+      // The inactive hairline must match the Session log button exactly.
+      if (this.logBorder !== '') share.style.border = this.logBorder
       share.removeAttribute('aria-pressed')
     }
   }
@@ -175,6 +189,7 @@ export class ShareController {
     cancel.type = 'button'
     cancel.textContent = '取消'
     cancel.style.cssText = ghostButtonStyle()
+    if (this.logBorder !== '') cancel.style.border = this.logBorder
     cancel.addEventListener('click', () => this.deactivate())
     const confirm = document.createElement('button')
     confirm.type = 'button'
@@ -186,8 +201,10 @@ export class ShareController {
         void this.confirm(range.startEl, range.endEl, range.startEdge, range.endEdge)
       }
     })
-    // Buttons appear to the RIGHT of the share icon, so the icon shifts left.
-    row.append(cancel, confirm)
+    // 取消/确认 expand to the LEFT of the share button; the share pill itself
+    // stays in place (its active style marks the toggle state).
+    row.insertBefore(cancel, share)
+    row.insertBefore(confirm, share)
     this.cancelButton = cancel
     this.confirmButton = confirm
   }
