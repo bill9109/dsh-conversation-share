@@ -53,35 +53,25 @@ DSH_CHECKOUT=/path/to/dsh-checkout pnpm run build
 
 ## 安装
 
-### 从私有仓库安装（发布）
+用标准的 `dsh plugin` 命令安装到 profile（无需改源码、无需手动编辑 package.json）：
 
-1. 在 `~/.dsh/profiles/web/package.json` 的 `dependencies` 加：
+```sh
+# 从仓库安装（发布/别人使用）
+dsh plugin --profile web add github:dsh-external/dsh-conversation-share
 
-   ```json
-   "@dsh-external/dsh-conversation-share": "github:dsh-external/dsh-conversation-share#main"
-   ```
+# 或指定分支/提交
+dsh plugin --profile web add github:dsh-external/dsh-conversation-share#main
 
-   并在 `dsh.profile.bundles` 数组末尾加 `"@dsh-external/dsh-conversation-share"`。
+# 或从本地 checkout 安装（开发调试，改完重新构建即生效）
+dsh plugin --profile web add /path/to/your/dsh-conversation-share
+# 在插件目录内可直接：dsh plugin --profile web add .
+```
 
-2. 在 profile 目录执行 `pnpm install`。
+命令内部 = 在 profile 目录执行 `pnpm add <spec>` + 自动把声明了 `dsh.bundle` 的包追加进 `dsh.profile.bundles`。
 
-3. 重启 web，浏览器**硬刷新**（Cmd+Shift+R）。
+安装后**重启 web**，浏览器**硬刷新**（Cmd+Shift+R）——旧 tab 不会加载新 bundle。
 
 > 私有仓库安装需要 git 认证：先 `gh auth login` 再 `gh auth setup-git`（HTTPS 走 gh 凭据），或配置 GitHub Personal Access Token。
-
-### 本地开发（link:）
-
-1. 在 `~/.dsh/profiles/web/package.json` 的 `dependencies` 加：
-
-   ```json
-   "@dsh-external/dsh-conversation-share": "link:/绝对/路径/dsh-conversation-share"
-   ```
-
-   并在 `dsh.profile.bundles` 数组末尾加 `"@dsh-external/dsh-conversation-share"`。
-
-2. 在 profile 目录执行 `pnpm install`（建立 node_modules 链接）。
-
-3. 重启 web，浏览器**硬刷新**（Cmd+Shift+R）。
 
 ## 发布
 
