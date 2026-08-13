@@ -4,6 +4,11 @@
 
 把 DeepSeek Harness 对话流中选中的一段，渲染成带品牌尾部的 PNG 长图分享出去。
 
+<img width="1512" height="745" alt="image" src="https://github.com/user-attachments/assets/8f7928d4-f6a0-493f-88de-a5d844b9d38c" />
+<img width="1512" height="746" alt="image" src="https://github.com/user-attachments/assets/8d48eacf-b417-4056-bc0f-668d9161141b" />
+
+
+
 ## 功能
 
 - 右上角 Session log 按钮左侧的分享胶囊（与 log 同款样式，点击后激活为蓝色高亮，`[取消][确认]` 在分享左侧展开）
