@@ -73,6 +73,15 @@ dsh plugin --profile web add /path/to/your/dsh-conversation-share
 
 > 私有仓库安装需要 git 认证：先 `gh auth login` 再 `gh auth setup-git`（HTTPS 走 gh 凭据），或配置 GitHub Personal Access Token。
 
+## 卸载
+
+```sh
+dsh plugin --profile web remove @dsh-external/dsh-conversation-share
+```
+
+命令内部 = 在 profile 目录执行 `pnpm remove <pkg>` + 自动把它从 `dsh.profile.bundles` 移除。卸载后**重启 web** 并**硬刷新**浏览器。
+
+
 ## 发布
 
 1. 确保构建产物是最新的：
