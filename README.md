@@ -1,11 +1,13 @@
 # dsh-conversation-share — DSH 对话分享截图插件
 
+[English](README.en.md) | 中文
+
 把 DeepSeek Harness 对话流中选中的一段，渲染成带品牌尾部的 PNG 长图分享出去。
+
+许可证 BSD-3-Clause · [GitHub](https://github.com/bill9109/dsh-conversation-share)
 
 <img width="1512" height="745" alt="image" src="https://github.com/user-attachments/assets/8f7928d4-f6a0-493f-88de-a5d844b9d38c" />
 <img width="1512" height="746" alt="image" src="https://github.com/user-attachments/assets/8d48eacf-b417-4056-bc0f-668d9161141b" />
-
-
 
 ## 功能
 
@@ -32,14 +34,13 @@ dsh-conversation-share/
 │   │   ├── capture.ts        # 截图管线（分块、裁剪、拼接、品牌尾部）
 │   │   ├── brand.ts          # 品牌 SVG 克隆（var() 烘焙 + clip-path 中和）
 │   │   ├── modal.ts          # 预览弹窗 + 下载/复制
-│   │   ├── dom.ts / theme.ts / icons.ts / toast.ts
+│   │   └── dom.ts / theme.ts / icons.ts / toast.ts
 │   └── vendor/html-to-image/ # 内嵌的 html-to-image 1.11.13（MIT，见其 LICENSE）
 ├── scripts/build.mjs         # 构建脚本（链接 DSH checkout 依赖 → tsc → tsdown）
 ├── lib/                      # 构建产物（client.js 为浏览器 bundle，随仓库提交）
 ├── package.json              # dsh.bundle + dsh.client 声明
 ├── cordis.patch.yml          # bundle patch（插入 conversation-share 插件）
-├── tsconfig.json / tsdown.config.mjs
-└── tests/                    # （预留）
+└── tsconfig.json / tsdown.config.mjs
 ```
 
 ## 构建
@@ -60,10 +61,10 @@ DSH_CHECKOUT=/path/to/dsh-checkout pnpm run build
 
 ```sh
 # 从仓库安装
-dsh plugin --profile web add github:dsh-external/dsh-conversation-share
+dsh plugin --profile web add github:bill9109/dsh-conversation-share
 
 # 或指定分支/提交
-dsh plugin --profile web add github:dsh-external/dsh-conversation-share#main
+dsh plugin --profile web add github:bill9109/dsh-conversation-share#main
 
 # 或从本地 checkout 安装（开发调试，改完重新构建即生效）
 dsh plugin --profile web add /path/to/your/dsh-conversation-share
@@ -74,7 +75,6 @@ dsh plugin --profile web add /path/to/your/dsh-conversation-share
 
 安装后**重启 web**，浏览器**硬刷新**（Cmd+Shift+R）——旧 tab 不会加载新 bundle。
 
-
 ## 卸载
 
 ```sh
@@ -82,7 +82,6 @@ dsh plugin --profile web remove @dsh-external/dsh-conversation-share
 ```
 
 命令内部 = 在 profile 目录执行 `pnpm remove <pkg>` + 自动把它从 `dsh.profile.bundles` 移除。卸载后**重启 web** 并**硬刷新**浏览器。
-
 
 ## 发布
 
