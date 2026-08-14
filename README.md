@@ -1,104 +1,152 @@
-# dsh-conversation-share — DSH 对话分享截图插件
+# dsh-conversation-share — Share a range of a DSH conversation as an image
 
-[English](README.en.md) | 中文
+[![Release v0.1.1](https://img.shields.io/badge/release-v0.1.1-5B4CF0?style=flat-square)](https://github.com/bill9109/dsh-conversation-share/releases/tag/v0.1.1)
+[![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-0B7285?style=flat-square)](LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-%5E20%20%7C%20%3E%3D22-339933?style=flat-square&logo=nodedotjs&logoColor=white)](package.json)
+[![DSH profiles](https://img.shields.io/badge/DSH-Web-5B4CF0?style=flat-square)](cordis.patch.yml)
 
-把 DeepSeek Harness 对话流中选中的一段，渲染成带品牌尾部的 PNG 长图分享出去。
+**Install:** `dsh plugin --profile web add github:bill9109/dsh-conversation-share`
 
-许可证 BSD-3-Clause · [GitHub](https://github.com/bill9109/dsh-conversation-share)
+**Render a selected range of a DeepSeek Harness conversation into a PNG long image with a branded footer, ready to share.**
+
+[English](README.md) | [中文](README.zh.md)
+
+## Why this exists
+
+Conversation history lives inside the DSH Web UI, and sharing a meaningful part of it usually means screenshots spliced by hand — cropped, misaligned, with no brand or context. This plugin lets you pick an exact range of a conversation with two draggable, magnetically snapping markers and render it into a single polished PNG long image with a DeepSeek Harness branded footer.
+
+## Screenshots
 
 <img width="1512" height="745" alt="image" src="https://github.com/user-attachments/assets/8f7928d4-f6a0-493f-88de-a5d844b9d38c" />
 <img width="1512" height="746" alt="image" src="https://github.com/user-attachments/assets/8d48eacf-b417-4056-bc0f-668d9161141b" />
 
-## 功能
+## Features
 
-- 右上角 Session log 按钮左侧的分享胶囊（与 log 同款样式，点击后激活为蓝色高亮，`[取消][确认]` 在分享左侧展开）
-- 两个可拖动的范围标记把手（横向标签：「从这里开始」/「到这里结束」），支持磁性吸附
-  - 吸附点 = 语义消息行 + markdown 块（p/pre/ul/li/table/标题）+ 视觉盒子（代码块/卡片）+ 内容级按钮（产物文件 chip）+ 段落内部每一行文本
-  - 开始端吸元素**顶边**，结束端吸元素**底边**；两个把手不可交叉
-  - 吸附提示 = 淡蓝半透明圆角矩形填充（扁平风格）
-- 滚动模型：视口内把手 1:1 跟手不滚屏；指针进入顶部/底部边缘区（64px）才带动页面滚动（穿透深度钳制、帧率无关），离开即停；点按不滚（需真实拖动 ≥8px）
-- 截图：40pt 主题底色留白（四周对称）+ 底部 DeepSeek Harness 品牌图标（含 BETA 徽标文字）；超长内容分块渲染拼接，绕过 canvas 高度上限
-- 预览弹窗：图片宽度自适应、纵向滚动查看、下载 PNG、复制图片
+- **Share capsule** to the left of the Session log button in the top-right corner (same style as log; clicking activates a blue highlight, with `[Cancel][Confirm]` expanding to its left)
+- **Two draggable range markers** (horizontal labels: "Start here" / "End here") with magnetic snapping
+  - Snap points = semantic message rows + markdown blocks (p/pre/ul/li/table/headings) + visual boxes (code blocks/cards) + content-level buttons (artifact file chips) + every text line inside paragraphs
+  - The start handle snaps to an element's **top edge**, the end handle to its **bottom edge**; the two handles cannot cross
+  - Snap hint = light blue translucent rounded-rect fill (flat style)
+- **Scrolling model**: handles follow the pointer 1:1 within the viewport without scrolling; only when the pointer enters the top/bottom edge zones (64px) does the page scroll (clamped penetration depth, frame-rate independent), stopping when it leaves; clicking does not scroll (a real drag of ≥8px is required)
+- **Capture**: 40pt theme-background padding (symmetric on all sides) + a DeepSeek Harness brand icon at the bottom (with the BETA badge text); extra-long content is rendered in chunks and stitched together to bypass the canvas height limit
+- **Preview modal**: image width adapts, vertical scroll to review, download PNG, copy image
 
-## 目录结构
+## Usage
 
-```
-dsh-conversation-share/
-├── src/
-│   ├── index.ts              # 插件 host 半部（no-op）
-│   ├── client/               # 浏览器半部（client bundle 入口 src/client/index.ts）
-│   │   ├── index.ts          # apply(ctx)：挂载分享流程
-│   │   ├── controller.ts     # 分享按钮/取消确认/模式切换/截图编排
-│   │   ├── markers.ts        # 范围标记把手（吸附、滚动、状态机）
-│   │   ├── snap-targets.ts   # 吸附目标收集（行/块/行级文本/内容按钮 + 位置去重）
-│   │   ├── capture.ts        # 截图管线（分块、裁剪、拼接、品牌尾部）
-│   │   ├── brand.ts          # 品牌 SVG 克隆（var() 烘焙 + clip-path 中和）
-│   │   ├── modal.ts          # 预览弹窗 + 下载/复制
-│   │   └── dom.ts / theme.ts / icons.ts / toast.ts
-│   └── vendor/html-to-image/ # 内嵌的 html-to-image 1.11.13（MIT，见其 LICENSE）
-├── scripts/build.mjs         # 构建脚本（链接 DSH checkout 依赖 → tsc → tsdown）
-├── lib/                      # 构建产物（client.js 为浏览器 bundle，随仓库提交）
-├── package.json              # dsh.bundle + dsh.client 声明
-├── cordis.patch.yml          # bundle patch（插入 conversation-share 插件）
-└── tsconfig.json / tsdown.config.mjs
-```
+1. Click the share capsule next to the Session log button in the top-right corner; it activates (blue highlight) and the `[Cancel][Confirm]` controls appear
+2. Drag the two range markers to select the conversation range — they snap to message rows, markdown blocks, and line-level text; the start handle snaps to a top edge, the end handle to a bottom edge
+3. Click **Confirm** to render the selection into a PNG long image (extra-long content is chunked and stitched automatically)
+4. Review the result in the preview modal: download the PNG or copy the image to the clipboard
 
-## 构建
+## Install
 
-需要一份 DSH checkout（官方仓库或快照目录均可）：
+Install into the `web` profile with the standard `dsh plugin` mechanism (no source changes, no manual package.json edits):
 
 ```sh
-DSH_CHECKOUT=/path/to/dsh-checkout node scripts/build.mjs
-# 或通过 pnpm：
-DSH_CHECKOUT=/path/to/dsh-checkout pnpm run build
-```
-
-脚本会临时把 DSH checkout 的 `node_modules` 软链到本目录（构建结束自动清理），依次执行 `tsc`（类型检查）和 `tsdown`（产出 `lib/index.js` + `lib/client.js`）。
-
-## 安装
-
-用标准的 `dsh plugin` 命令安装到 profile（无需改源码、无需手动编辑 package.json）：
-
-```sh
-# 从仓库安装
 dsh plugin --profile web add github:bill9109/dsh-conversation-share
 
-# 或指定分支/提交
+# Or pin a branch/commit
 dsh plugin --profile web add github:bill9109/dsh-conversation-share#main
 
-# 或从本地 checkout 安装（开发调试，改完重新构建即生效）
+# Or install from a local checkout (development — rebuild and it takes effect)
 dsh plugin --profile web add /path/to/your/dsh-conversation-share
-# 在插件目录内可直接：dsh plugin --profile web add .
 ```
 
-命令内部 = 在 profile 目录执行 `pnpm add <spec>` + 自动把声明了 `dsh.bundle` 的包追加进 `dsh.profile.bundles`。
+Internally the command runs `pnpm add <spec>` in the profile directory and automatically appends packages that declare `dsh.bundle` to `dsh.profile.bundles`. The repository ships its build output (`lib/`), so no consumer-side build is needed.
 
-安装后**重启 web**，浏览器**硬刷新**（Cmd+Shift+R）——旧 tab 不会加载新 bundle。
+After installing, **restart web** and **hard-refresh** the browser (Cmd+Shift+R) — old tabs do not load the new bundle.
 
-## 卸载
+### Upgrade
+
+```sh
+dsh plugin --profile web update github:bill9109/dsh-conversation-share
+```
+
+For a local-path installation, run `add` again against the replacement checkout, then restart web and hard-refresh.
+
+### Uninstall
 
 ```sh
 dsh plugin --profile web remove @bill9109/dsh-conversation-share
 ```
 
-命令内部 = 在 profile 目录执行 `pnpm remove <pkg>` + 自动把它从 `dsh.profile.bundles` 移除。卸载后**重启 web** 并**硬刷新**浏览器。
+The command runs `pnpm remove <pkg>` in the profile directory and removes it from `dsh.profile.bundles`. After uninstalling, **restart web** and **hard-refresh** the browser.
 
-## 发布
+## Troubleshooting
 
-1. 确保构建产物是最新的：
+| Symptom | Resolution |
+| --- | --- |
+| Share capsule does not appear | The plugin only loads after restarting web and hard-refreshing the browser; verify the bundle row exists in the profile (`dsh --profile web --dump-config | grep conversation-share`) |
+| Handles cannot cross or snap oddly | That is by design — the start handle snaps to top edges, the end handle to bottom edges, and they cannot cross; drag past an element to flip which edge binds |
+| The page scrolls while dragging | Scrolling only happens in the 64px top/bottom edge zones; drag within the viewport to move the handle 1:1 without scrolling |
+| Confirm does nothing / blank image | Ensure the selection covers at least one message; the capture pipeline chunks and stitches extra-long content, so very long ranges may take a moment |
+| Copied image is missing from the clipboard | The browser may have blocked clipboard image writes; use **Download PNG** instead |
+
+## Directory structure
+
+```
+dsh-conversation-share/
+├── src/
+│   ├── index.ts              # host half of the plugin (no-op)
+│   ├── client/               # browser half (client bundle entry src/client/index.ts)
+│   │   ├── index.ts          # apply(ctx): mounts the share flow
+│   │   ├── controller.ts     # share button / cancel-confirm / mode switching / capture orchestration
+│   │   ├── markers.ts        # range marker handles (snapping, scrolling, state machine)
+│   │   ├── snap-targets.ts   # snap-target collection (rows/blocks/line-level text/content buttons + position dedup)
+│   │   ├── capture.ts        # capture pipeline (chunking, cropping, stitching, branded footer)
+│   │   ├── brand.ts          # brand SVG clone (var() baking + clip-path neutralization)
+│   │   ├── modal.ts          # preview modal + download/copy
+│   │   └── dom.ts / theme.ts / icons.ts / toast.ts
+│   └── vendor/html-to-image/ # vendored html-to-image 1.11.13 (MIT, see its LICENSE)
+├── scripts/build.mjs         # build script (links DSH checkout deps → tsc → tsdown)
+├── lib/                      # build output (client.js is the browser bundle, committed)
+├── package.json              # dsh.bundle + dsh.client declarations
+├── cordis.patch.yml          # bundle patch (inserts the conversation-share plugin)
+└── tsconfig.json / tsdown.config.mjs
+```
+
+## Build
+
+Requires a DSH checkout (the official repository or a snapshot directory both work):
+
+```sh
+DSH_CHECKOUT=/path/to/dsh-checkout node scripts/build.mjs
+# or via pnpm:
+DSH_CHECKOUT=/path/to/dsh-checkout pnpm run build
+```
+
+The script temporarily symlinks the DSH checkout's `node_modules` into this directory (cleaned up automatically when the build ends) and runs `tsc` (type check) then `tsdown` (producing `lib/index.js` + `lib/client.js`).
+
+## Development and verification
+
+```sh
+pnpm run check     # tsc --noEmit
+DSH_CHECKOUT=/path/to/dsh-checkout pnpm run build   # -> lib/ (committed)
+```
+
+`lib/` is committed so consumers install without building. Changes to the share flow (markers, snapping, capture, preview) should be exercised against a live web profile and the built bundle committed in the same change.
+
+## Release
+
+1. Make sure the build output is up to date:
 
    ```sh
    DSH_CHECKOUT=/path/to/dsh-checkout node scripts/build.mjs
    ```
 
-2. 提交并推送到 `main`（`lib/` 作为预构建产物一并提交，消费者装包时无需 DSH checkout）：
+2. Bump the version, update `CHANGELOG.md`, commit and push to `main`, and tag the release:
 
    ```sh
-   git add .
-   git commit -m "release v0.1.x"
-   git push origin main
+   git add . && git commit -m "release v0.1.x" && git push origin main
+   git tag v0.1.x && git push origin v0.1.x
    ```
+
+## Community and About
+
+- Use [GitHub Issues](https://github.com/bill9109/dsh-conversation-share/issues) for reproducible bugs, focused feature requests, and usage questions.
+- Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing changes; report vulnerabilities privately via [SECURITY.md](SECURITY.md).
+- Follow releases and compatibility notes in [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
-BSD-3-Clause（vendored html-to-image 为 MIT，见 `src/vendor/html-to-image/LICENSE`）。
+BSD-3-Clause (the vendored html-to-image is MIT, see `src/vendor/html-to-image/LICENSE`).

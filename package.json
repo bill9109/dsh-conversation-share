@@ -1,7 +1,18 @@
 {
   "name": "@bill9109/dsh-conversation-share",
-  "version": "0.1.0",
-  "description": "Select a range of a DSH conversation and share it as a PNG long image",
+  "version": "0.1.1",
+  "description": "Select a range of a DeepSeek Harness conversation and share it as a branded PNG long image, with draggable magnetically snapping range markers.",
+  "keywords": [
+    "deepseek",
+    "deepseek-harness",
+    "dsh-plugin",
+    "dsh-bundle",
+    "web-ui",
+    "conversation",
+    "share",
+    "screenshot",
+    "png"
+  ],
   "type": "module",
   "main": "./lib/index.js",
   "types": "./lib/types/index.d.ts",
@@ -11,17 +22,35 @@
       "default": "./lib/index.js"
     },
     "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json"
   },
   "files": [
     "lib",
     "src",
-    "cordis.patch.yml"
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh.md",
+    "README.i18n.yaml",
+    "CHANGELOG.md",
+    "LICENSE"
   ],
   "license": "BSD-3-Clause",
+  "engines": {
+    "node": "^20.0.0 || >=22.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bill9109/dsh-conversation-share.git"
+  },
+  "homepage": "https://github.com/bill9109/dsh-conversation-share#readme",
+  "bugs": {
+    "url": "https://github.com/bill9109/dsh-conversation-share/issues"
+  },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "check": "tsc -p tsconfig.json --noEmit --pretty false"
+    "check": "tsc -p tsconfig.json --noEmit --pretty false",
+    "verify:i18n": "node scripts/verify-i18n.mjs"
   },
   "dsh": {
     "bundle": {
