@@ -4,6 +4,12 @@ All notable user-facing changes to dsh-conversation-share are documented in this
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-08-14
+
+### Changed
+
+- Migrated the repository to the `omdsh-dev` GitHub organization: the package scope is now `@omdsh-dev/dsh-conversation-share`, and the repository, homepage, bugs, badges, and install/update/remove commands all point at `github.com/omdsh-dev/dsh-conversation-share`. The built `lib/` was re-registered under the new name.
+
 ## [0.1.1] - 2026-08-14
 
 ### Changed

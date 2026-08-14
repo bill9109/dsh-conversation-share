@@ -1,11 +1,11 @@
 # dsh-conversation-share — DSH 对话分享截图插件
 
-[![Release v0.1.1](https://img.shields.io/badge/release-v0.1.1-5B4CF0?style=flat-square)](https://github.com/bill9109/dsh-conversation-share/releases/tag/v0.1.1)
+[![Release v0.1.2](https://img.shields.io/badge/release-v0.1.2-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-conversation-share/releases/tag/v0.1.2)
 [![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-0B7285?style=flat-square)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-%5E20%20%7C%20%3E%3D22-339933?style=flat-square&logo=nodedotjs&logoColor=white)](package.json)
 [![DSH profiles](https://img.shields.io/badge/DSH-Web-5B4CF0?style=flat-square)](cordis.patch.yml)
 
-**安装：** `dsh plugin --profile web add github:bill9109/dsh-conversation-share`
+**安装：** `dsh plugin --profile web add github:omdsh-dev/dsh-conversation-share`
 
 **把 DeepSeek Harness 对话流中选中的一段，渲染成带品牌尾部的 PNG 长图分享出去。**
 
@@ -43,10 +43,10 @@
 用标准的 `dsh plugin` 命令安装到 web profile（无需改源码、无需手动编辑 package.json）：
 
 ```sh
-dsh plugin --profile web add github:bill9109/dsh-conversation-share
+dsh plugin --profile web add github:omdsh-dev/dsh-conversation-share
 
 # 或指定分支/提交
-dsh plugin --profile web add github:bill9109/dsh-conversation-share#main
+dsh plugin --profile web add github:omdsh-dev/dsh-conversation-share#main
 
 # 或从本地 checkout 安装（开发调试，改完重新构建即生效）
 dsh plugin --profile web add /path/to/your/dsh-conversation-share
@@ -59,7 +59,7 @@ dsh plugin --profile web add /path/to/your/dsh-conversation-share
 ### 升级
 
 ```sh
-dsh plugin --profile web update github:bill9109/dsh-conversation-share
+dsh plugin --profile web update github:omdsh-dev/dsh-conversation-share
 ```
 
 本地路径安装则对替换后的 checkout 重新执行 `add`，然后重启 web 并硬刷新。
@@ -67,7 +67,7 @@ dsh plugin --profile web update github:bill9109/dsh-conversation-share
 ### 卸载
 
 ```sh
-dsh plugin --profile web remove @bill9109/dsh-conversation-share
+dsh plugin --profile web remove @omdsh-dev/dsh-conversation-share
 ```
 
 命令内部 = 在 profile 目录执行 `pnpm remove <pkg>` + 自动把它从 `dsh.profile.bundles` 移除。卸载后**重启 web** 并**硬刷新**浏览器。
@@ -143,7 +143,7 @@ DSH_CHECKOUT=/path/to/dsh-checkout pnpm run build   # -> lib/（已提交）
 
 ## 社区与关于
 
-- 可复现的 bug、聚焦的功能请求和使用问题，走 [GitHub Issues](https://github.com/bill9109/dsh-conversation-share/issues)。
+- 可复现的 bug、聚焦的功能请求和使用问题，走 [GitHub Issues](https://github.com/omdsh-dev/dsh-conversation-share/issues)。
 - 提变更前先读 [CONTRIBUTING.md](CONTRIBUTING.md)；安全问题通过 [SECURITY.md](SECURITY.md) 私有上报。
 - 版本与兼容性说明见 [CHANGELOG.md](CHANGELOG.md)。
 

@@ -1,11 +1,11 @@
 # dsh-conversation-share — Share a range of a DSH conversation as an image
 
-[![Release v0.1.1](https://img.shields.io/badge/release-v0.1.1-5B4CF0?style=flat-square)](https://github.com/bill9109/dsh-conversation-share/releases/tag/v0.1.1)
+[![Release v0.1.2](https://img.shields.io/badge/release-v0.1.2-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-conversation-share/releases/tag/v0.1.2)
 [![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-0B7285?style=flat-square)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-%5E20%20%7C%20%3E%3D22-339933?style=flat-square&logo=nodedotjs&logoColor=white)](package.json)
 [![DSH profiles](https://img.shields.io/badge/DSH-Web-5B4CF0?style=flat-square)](cordis.patch.yml)
 
-**Install:** `dsh plugin --profile web add github:bill9109/dsh-conversation-share`
+**Install:** `dsh plugin --profile web add github:omdsh-dev/dsh-conversation-share`
 
 **Render a selected range of a DeepSeek Harness conversation into a PNG long image with a branded footer, ready to share.**
 
@@ -43,10 +43,10 @@ Conversation history lives inside the DSH Web UI, and sharing a meaningful part 
 Install into the `web` profile with the standard `dsh plugin` mechanism (no source changes, no manual package.json edits):
 
 ```sh
-dsh plugin --profile web add github:bill9109/dsh-conversation-share
+dsh plugin --profile web add github:omdsh-dev/dsh-conversation-share
 
 # Or pin a branch/commit
-dsh plugin --profile web add github:bill9109/dsh-conversation-share#main
+dsh plugin --profile web add github:omdsh-dev/dsh-conversation-share#main
 
 # Or install from a local checkout (development — rebuild and it takes effect)
 dsh plugin --profile web add /path/to/your/dsh-conversation-share
@@ -59,7 +59,7 @@ After installing, **restart web** and **hard-refresh** the browser (Cmd+Shift+R)
 ### Upgrade
 
 ```sh
-dsh plugin --profile web update github:bill9109/dsh-conversation-share
+dsh plugin --profile web update github:omdsh-dev/dsh-conversation-share
 ```
 
 For a local-path installation, run `add` again against the replacement checkout, then restart web and hard-refresh.
@@ -67,7 +67,7 @@ For a local-path installation, run `add` again against the replacement checkout,
 ### Uninstall
 
 ```sh
-dsh plugin --profile web remove @bill9109/dsh-conversation-share
+dsh plugin --profile web remove @omdsh-dev/dsh-conversation-share
 ```
 
 The command runs `pnpm remove <pkg>` in the profile directory and removes it from `dsh.profile.bundles`. After uninstalling, **restart web** and **hard-refresh** the browser.
@@ -143,7 +143,7 @@ DSH_CHECKOUT=/path/to/dsh-checkout pnpm run build   # -> lib/ (committed)
 
 ## Community and About
 
-- Use [GitHub Issues](https://github.com/bill9109/dsh-conversation-share/issues) for reproducible bugs, focused feature requests, and usage questions.
+- Use [GitHub Issues](https://github.com/omdsh-dev/dsh-conversation-share/issues) for reproducible bugs, focused feature requests, and usage questions.
 - Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing changes; report vulnerabilities privately via [SECURITY.md](SECURITY.md).
 - Follow releases and compatibility notes in [CHANGELOG.md](CHANGELOG.md).
 

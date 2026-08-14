@@ -3,7 +3,7 @@
 ## Start here
 
 - Read the [README](README.md) for features, installation, usage, and troubleshooting.
-- Search existing [issues](https://github.com/bill9109/dsh-conversation-share/issues) and [pull requests](https://github.com/bill9109/dsh-conversation-share/pulls) before opening a duplicate.
+- Search existing [issues](https://github.com/omdsh-dev/dsh-conversation-share/issues) and [pull requests](https://github.com/omdsh-dev/dsh-conversation-share/pulls) before opening a duplicate.
 
 ## Where to ask
 
