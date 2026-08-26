@@ -5,6 +5,6 @@ if (checkout === undefined) {
 
 const { clientBundle } = await import(`${checkout}/packages/client/tsdown.client.ts`)
 
-export default clientBundle('@omdsh-dev/dsh-conversation-share', [
+export default clientBundle('dsh-conversation-share', [
   'lib/types/index.js',
 ])

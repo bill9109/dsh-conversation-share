@@ -67,7 +67,7 @@ dsh plugin --profile web update github:omdsh-dev/dsh-conversation-share
 ### 卸载
 
 ```sh
-dsh plugin --profile web remove @omdsh-dev/dsh-conversation-share
+dsh plugin --profile web remove dsh-conversation-share
 ```
 
 命令内部 = 在 profile 目录执行 `pnpm remove <pkg>` + 自动把它从 `dsh.profile.bundles` 移除。卸载后**重启 web** 并**硬刷新**浏览器。

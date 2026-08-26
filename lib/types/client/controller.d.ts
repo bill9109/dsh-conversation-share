@@ -7,7 +7,9 @@ export declare class ShareController {
     private readonly ctx;
     private readonly modal;
     private observer;
-    private tablist;
+    private utilities;
+    /** The Session log button's computed border, copied so the share pill matches. */
+    private logBorder;
     private actionsRow;
     private shareButton;
     private cancelButton;

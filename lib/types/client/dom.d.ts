@@ -7,5 +7,7 @@ export declare function findScrollport(): HTMLElement | null;
 export declare function findFlowList(): HTMLElement | null;
 /** The sticky composer seat inside the scrollport, when present. */
 export declare function findComposerSeat(scrollport: HTMLElement): HTMLElement | null;
+/** The header's right-end utilities strip (home of the Session log button). */
+export declare function findHeaderUtilities(): HTMLElement | null;
 /** Ensure the 对话 tab is active (the share flow operates on the chat view). */
 export declare function switchToChatTab(): void;

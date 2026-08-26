@@ -1,5 +1,5 @@
 {
-  "name": "@omdsh-dev/dsh-conversation-share",
+  "name": "dsh-conversation-share",
   "version": "0.1.2",
   "description": "Select a range of a DeepSeek Harness conversation and share it as a branded PNG long image, with draggable magnetically snapping range markers.",
   "keywords": [
