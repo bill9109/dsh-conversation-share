@@ -25,3 +25,7 @@ All notable user-facing changes to dsh-conversation-share are documented in this
 
 - Initial release: select a range of a DSH conversation with two draggable, magnetically snapping markers and render it into a PNG long image with a branded footer.
 - Renamed the package scope `@dsh-external` → `@bill9109`; the built `lib/` was rebuilt with the new registration name.
+
+## 0.1.3 (test release)
+
+- Publish pipeline verification via GitHub Actions + npm Trusted Publishing (OIDC).
