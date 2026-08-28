@@ -105,5 +105,22 @@ export function primaryButtonStyle(): string {
 export const headerShareHoverBackground =
   'var(--dsw-alias-interactive-bg-hover, rgba(0, 0, 0, 0.06))'
 
+/** Hover fill for the ghost (取消) button — the shared secondary hover. */
+export function ghostButtonHoverBackground(): string {
+  return 'var(--dsw-alias-interactive-bg-hover, rgba(0, 0, 0, 0.06))'
+}
+
+/** Hover fill for the primary (确认) button: a touch darker business primary. */
+export function primaryButtonHoverBackground(): string {
+  const c = themeColors()
+  return 'color-mix(in srgb, var(--dsw-alias-state-business-primary, ' + c.businessPrimary + ') 88%, black)'
+}
+
+/** Restore the non-hover fill for the primary (确认) button. */
+export function primaryButtonBackground(): string {
+  const c = themeColors()
+  return 'var(--dsw-alias-state-business-primary, ' + c.businessPrimary + ')'
+}
+
 /** Shared pill/line font stack for the marker chrome. */
 export const chromeFontStack = FONT_STACK

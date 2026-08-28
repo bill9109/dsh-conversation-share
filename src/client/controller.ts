@@ -7,8 +7,8 @@ import { findBrandSvg } from './brand.ts'
 import { captureRange } from './capture.ts'
 import { findFlowList, findHeaderUtilities, findScrollport, switchToChatTab } from './dom.ts'
 import {
-  ghostButtonStyle, headerShareButtonActiveStyle, headerShareButtonStyle,
-  headerShareHoverBackground, headerShareIconSVG, primaryButtonStyle,
+  ghostButtonHoverBackground, ghostButtonStyle, headerShareButtonActiveStyle, headerShareButtonStyle,
+  headerShareHoverBackground, headerShareIconSVG, primaryButtonBackground, primaryButtonHoverBackground, primaryButtonStyle,
 } from './icons.ts'
 import { MarkerOverlay } from './markers.ts'
 import { PreviewModal } from './modal.ts'
@@ -203,6 +203,14 @@ export class ShareController {
     cancel.style.cssText = ghostButtonStyle()
     if (this.logBorder !== '') cancel.style.border = this.logBorder
     cancel.addEventListener('click', () => this.deactivate())
+    // Hover fill matching the theme's ghost/secondary button (inline styles beat
+    // the stylesheet :hover, so toggle the background via events).
+    cancel.addEventListener('mouseenter', () => {
+      cancel.style.background = ghostButtonHoverBackground()
+    })
+    cancel.addEventListener('mouseleave', () => {
+      cancel.style.background = 'transparent'
+    })
     const confirm = document.createElement('button')
     confirm.type = 'button'
     confirm.textContent = '确认'
@@ -212,6 +220,14 @@ export class ShareController {
       if (range !== null && range !== undefined) {
         void this.confirm(range.startEl, range.endEl, range.startEdge, range.endEdge)
       }
+    })
+    // Hover fill: darken the business primary slightly (no dedicated hover token,
+    // so mix toward black); restore the base fill on leave.
+    confirm.addEventListener('mouseenter', () => {
+      confirm.style.background = primaryButtonHoverBackground()
+    })
+    confirm.addEventListener('mouseleave', () => {
+      confirm.style.background = primaryButtonBackground()
     })
     // 取消/确认 expand to the LEFT of the share button; the share pill itself
     // stays in place (its active style marks the toggle state).
