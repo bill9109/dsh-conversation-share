@@ -23,8 +23,14 @@ export function findComposerSeat(scrollport: HTMLElement): HTMLElement | null {
 
 /** The header's right-end utilities strip (home of the Session log button). */
 export function findHeaderUtilities(): HTMLElement | null {
+  // Stable slot (dsh alpha+): the header's right-end utilities strip. Prefer the
+  // explicit data-slot so the locator survives Session-log-button label changes.
+  const slot = document.querySelector<HTMLElement>('[data-slot="conversation.session.header.utilities"]')
+  if (slot !== null) return slot
+  // Fallback (older builds / label variants): the parent of the Session log button.
+  // The label is localized (e.g. "Session 日志"), so accept the "log" stem or the CJK 日志.
   const log = Array.from(document.querySelectorAll<HTMLElement>('header button')).find(
-    b => /session\s*log/i.test((b.textContent ?? '').trim()) && (b.textContent ?? '').trim().length < 30,
+    b => /session\s*(?:log|日志)/i.test((b.textContent ?? '').trim()) && (b.textContent ?? '').trim().length < 30,
   )
   return log?.parentElement ?? null
 }

@@ -81,9 +81,10 @@ export class ShareController {
     share.addEventListener('click', () => this.toggle())
     row.append(share)
     // Match the Session log button's hairline border exactly (theme-agnostic:
-    // copy its computed value so both buttons always agree).
+    // copy its computed value so both buttons always agree). The label is localized
+    // (e.g. "Session 日志"), so accept the "log" stem or the CJK 日志.
     const logBtn = Array.from(utilities.querySelectorAll('button')).find(
-      b => /session\s*log/i.test((b.textContent ?? '').trim()),
+      b => /session\s*(?:log|日志)/i.test((b.textContent ?? '').trim()),
     )
     if (logBtn !== undefined) {
       this.logBorder = getComputedStyle(logBtn).border
