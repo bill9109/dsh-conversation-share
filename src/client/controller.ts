@@ -8,7 +8,7 @@ import { captureRange } from './capture.ts'
 import { findFlowList, findHeaderUtilities, findScrollport, switchToChatTab } from './dom.ts'
 import {
   ghostButtonStyle, headerShareButtonActiveStyle, headerShareButtonStyle,
-  headerShareIconSVG, primaryButtonStyle,
+  headerShareHoverBackground, headerShareIconSVG, primaryButtonStyle,
 } from './icons.ts'
 import { MarkerOverlay } from './markers.ts'
 import { PreviewModal } from './modal.ts'
@@ -79,6 +79,17 @@ export class ShareController {
     share.style.cssText = headerShareButtonStyle()
     share.innerHTML = headerShareIconSVG() + '<span>分享</span>'
     share.addEventListener('click', () => this.toggle())
+    // Hover fill matching the Session log button's :hover. Inline styles beat
+    // stylesheet :hover rules, so toggle the background via events; skip while
+    // share mode is active (the active tint already reads as "pressed").
+    share.addEventListener('mouseenter', () => {
+      if (this.active) return
+      share.style.background = headerShareHoverBackground
+    })
+    share.addEventListener('mouseleave', () => {
+      if (this.active) return
+      share.style.background = 'transparent'
+    })
     row.append(share)
     // Match the Session log button's hairline border exactly (theme-agnostic:
     // copy its computed value so both buttons always agree). The label is localized

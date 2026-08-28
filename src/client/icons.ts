@@ -101,5 +101,9 @@ export function primaryButtonStyle(): string {
   ].join('')
 }
 
+/** Hover fill for the header share pill — matches the Session log button's :hover. */
+export const headerShareHoverBackground =
+  'var(--dsw-alias-interactive-bg-hover, rgba(0, 0, 0, 0.06))'
+
 /** Shared pill/line font stack for the marker chrome. */
 export const chromeFontStack = FONT_STACK
