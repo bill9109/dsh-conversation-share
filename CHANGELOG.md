@@ -4,6 +4,24 @@ All notable user-facing changes to dsh-conversation-share are documented in this
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-08-31
+
+### Changed
+
+- The header share button now gets a hover fill, matching the Session log button for visual consistency.
+- The share-mode confirm/cancel buttons gain hover fills.
+- The share button is located with a localized Session-log label, so it stays findable in non-English UI.
+
+### Release notes
+
+- First release published to npm under the bare package name `dsh-conversation-share` (registry `latest`). The earlier scoped names were git-only and were never published to npm.
+
+## [0.1.3] - 2026-08-26
+
+### Changed
+
+- Publish pipeline verification via GitHub Actions + npm Trusted Publishing (OIDC). The package is now published under the bare scope `dsh-conversation-share`.
+
 ## [0.1.2] - 2026-08-14
 
 ### Changed
@@ -26,6 +44,3 @@ All notable user-facing changes to dsh-conversation-share are documented in this
 - Initial release: select a range of a DSH conversation with two draggable, magnetically snapping markers and render it into a PNG long image with a branded footer.
 - Renamed the package scope `@dsh-external` → `@bill9109`; the built `lib/` was rebuilt with the new registration name.
 
-## 0.1.3 (test release)
-
-- Publish pipeline verification via GitHub Actions + npm Trusted Publishing (OIDC).
