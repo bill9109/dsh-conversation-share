@@ -1,6 +1,6 @@
 # dsh-conversation-share — DSH 对话分享截图插件
 
-[![Release v0.1.3](https://img.shields.io/badge/release-v0.1.3-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-conversation-share/releases/tag/v0.1.3)
+[![Release v0.1.4](https://img.shields.io/badge/release-v0.1.4-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-conversation-share/releases/tag/v0.1.4)
 [![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-0B7285?style=flat-square)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-%5E20%20%7C%20%3E%3D22-339933?style=flat-square&logo=nodedotjs&logoColor=white)](package.json)
 [![DSH profiles](https://img.shields.io/badge/DSH-Web-5B4CF0?style=flat-square)](cordis.patch.yml)
@@ -55,6 +55,34 @@ dsh plugin --profile web add /path/to/your/dsh-conversation-share
 命令内部 = 在 profile 目录执行 `pnpm add <spec>` + 自动把声明了 `dsh.bundle` 的包追加进 `dsh.profile.bundles`。仓库里带了构建产物（`lib/`），消费方安装无需构建。
 
 安装后**重启 web**，浏览器**硬刷新**（Cmd+Shift+R）——旧 tab 不会加载新 bundle。
+
+### 热安装（免重启）
+
+`dsh plugin add` 会把 bundle 追加进 `dsh.profile.bundles`，而该列表在启动时一次性组合，所以要**重启 web**。想在不重启的 `dsh web` 里加载插件，就注册到 profile 自己的 `cordis.patch.yml`（用户 patch 层）——`dsh web` 会在运行时热重载这一层：
+
+```sh
+cd "$DSH_HOME/profiles/web"                    # 通常是 ~/.dsh/profiles/web
+pnpm add dsh-conversation-share@latest          # 装进 profile；不要动 dsh.profile.bundles
+```
+
+再把插件写进这个会被热重载的用户 patch 层——追加到 `$DSH_HOME/profiles/web/cordis.patch.yml`：
+
+```yaml
+- insert:
+  - id: conversation-share
+    name: 'dsh-conversation-share'
+```
+
+保存后，运行中的 `dsh web` 会重新应用用户 patch 层并挂载该插件——**无需重启**。也可以直接用仓库里的一键脚本：
+
+```sh
+node scripts/install-hot.mjs --profile web --spec dsh-conversation-share@latest
+```
+
+**注意：**
+
+- 不要对同一个包再跑 `dsh plugin add`——同一个 id 重复 insert 会导致插件被加载两遍。
+- 全新客户端 bundle 仍需要**硬刷新一次**才能出现；HMR 重载链只热替换已在名录里的 bundle，新加入的条目要在重连时才刷新 graph。
 
 ### 升级
 

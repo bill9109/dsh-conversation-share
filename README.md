@@ -1,6 +1,6 @@
 # dsh-conversation-share — Share a range of a DSH conversation as an image
 
-[![Release v0.1.3](https://img.shields.io/badge/release-v0.1.3-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-conversation-share/releases/tag/v0.1.3)
+[![Release v0.1.4](https://img.shields.io/badge/release-v0.1.4-5B4CF0?style=flat-square)](https://github.com/omdsh-dev/dsh-conversation-share/releases/tag/v0.1.4)
 [![License: BSD-3-Clause](https://img.shields.io/badge/license-BSD--3--Clause-0B7285?style=flat-square)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-%5E20%20%7C%20%3E%3D22-339933?style=flat-square&logo=nodedotjs&logoColor=white)](package.json)
 [![DSH profiles](https://img.shields.io/badge/DSH-Web-5B4CF0?style=flat-square)](cordis.patch.yml)
@@ -55,6 +55,34 @@ dsh plugin --profile web add /path/to/your/dsh-conversation-share
 Internally the command runs `pnpm add <spec>` in the profile directory and automatically appends packages that declare `dsh.bundle` to `dsh.profile.bundles`. The repository ships its build output (`lib/`), so no consumer-side build is needed.
 
 After installing, **restart web** and **hard-refresh** the browser (Cmd+Shift+R) — old tabs do not load the new bundle.
+
+### Hot install (no restart)
+
+`dsh plugin add` appends the bundle to `dsh.profile.bundles`, which is composed once at boot, so it needs a **restart web**. To load a plugin into a running `dsh web` **without restarting**, register it through the profile's own `cordis.patch.yml` (the user patch layer), which `dsh web` hot-reloads at runtime:
+
+```sh
+cd "$DSH_HOME/profiles/web"                    # usually ~/.dsh/profiles/web
+pnpm add dsh-conversation-share@latest          # install into the profile; DO NOT touch dsh.profile.bundles
+```
+
+Then register the plugin in that hot-reloaded user patch layer — append this to `$DSH_HOME/profiles/web/cordis.patch.yml`:
+
+```yaml
+- insert:
+  - id: conversation-share
+    name: 'dsh-conversation-share'
+```
+
+Saving the patch file makes the running `dsh web` re-apply the user patch layer and mount the plugin — **no restart**. Or use the one-shot helper in this repo:
+
+```sh
+node scripts/install-hot.mjs --profile web --spec dsh-conversation-share@latest
+```
+
+**Caveats:**
+
+- Do **not** also run `dsh plugin add` for the same package — a duplicate patch insert for the same id loads the plugin twice.
+- The browser still needs **one hard-refresh** for a brand-new client bundle. The HMR reload chain only hot-swaps bundles already in the roster; a newly added entry refreshes its graph on reconnect.
 
 ### Upgrade
 

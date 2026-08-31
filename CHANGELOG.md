@@ -2,7 +2,11 @@
 
 All notable user-facing changes to dsh-conversation-share are documented in this file. The project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and uses semantic version tags.
 
-## [Unreleased]
+## [0.1.5] - 2026-08-31
+
+### Added
+
+- Hot-install helper `scripts/install-hot.mjs` and README docs: load a plugin into a running `dsh web` without a restart by registering it in the profile's hot-reloaded user patch layer (`cordis.patch.yml`) instead of `dsh.profile.bundles`.
 
 ## [0.1.4] - 2026-08-31
 
