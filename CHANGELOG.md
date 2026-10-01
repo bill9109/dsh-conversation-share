@@ -2,6 +2,20 @@
 
 All notable user-facing changes to dsh-conversation-share are documented in this file. The project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and uses semantic version tags.
 
+## [0.1.6] - 2026-10-01
+
+### Fixed
+
+- The export now lays out exactly like the live conversation. The offscreen capture wrapper is appended to `<body>`, outside the conversation's cascade, so the custom properties the conversation defines (`--dsh-chat-content-width` `--dsh-chat-user-width`, ...) fell back to their CSS defaults and message bubbles sized off the 748px fallback instead of the live column width. Text re-wrapped differently from the screen and rows came out shorter (a 98px row exported as 76px). `capture.ts` now mirrors the flow list's resolved custom properties plus the inherited text properties onto the wrapper before cloning, so wrapping, row heights and the horizontal rhythm match the view: the same row now exports at 98.2px, and other sampled rows match within rounding (24.5→25.2, 41→41.2, 1226→1226.2 CSS px).
+- The capture footer shows the full **DeepSeek Harness** lockup again (whale mark + "deepseek" + the HARNESS badge) instead of the bare whale. DSH split the old single 182x24 brand SVG into two parts — `[data-slot="sidebar.brand.mark"]` (whale, viewBox `0 0 23.16 17.04`) and `[data-slot="sidebar.brand.name"]` (wordmark, viewBox `26 0 156 24`) — and the footer used to keep only the button's first SVG. Both parts are crops of the same artwork, so `brand.ts` now re-assembles them into one 182x24 lockup. The wordmark is also cached because the collapsed sidebar unmounts its slot; a capture taken with the sidebar collapsed still renders the complete lockup.
+- The header share pill no longer mounts into the header's **更多操作 (More actions)** overflow menu. DSH moved the old `Session 日志` button into that menu, and the popup renders inside `<header>`, so the label-based locator matched the `下载 Session 日志` menu item and injected the share control into the popup — it only showed while the menu was open and vanished (and could not be clicked reliably) once it closed.
+- `findHeaderUtilities()` now prefers the stable `[data-slot="conversation.session.header.utilities"]` strip and rejects any popup descendant (`[role="menu"]`, `[role="listbox"]`, `[role="dialog"]`, `[data-menu-material]`) as a mount point.
+- The Session-log border hand-off also ignores menu items, so the share pill keeps its own hairline border when the log button lives in the overflow menu.
+
+### Note
+
+- `lib/` is committed and the release workflow (`npm publish`) does not rebuild it. 0.1.5 shipped a `lib/` built before the `data-slot` locator landed in `src/`, which is why the installed build still used the label locator. This release rebuilds `lib/` from the current `src/`.
+
 ## [0.1.5] - 2026-08-31
 
 ### Added

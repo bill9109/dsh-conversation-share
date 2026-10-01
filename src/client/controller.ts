@@ -5,7 +5,7 @@
 import type { ClientContext } from '@deepseek-ai/dsh-client-runtime/client'
 import { findBrandSvg } from './brand.ts'
 import { captureRange } from './capture.ts'
-import { findFlowList, findHeaderUtilities, findScrollport, switchToChatTab } from './dom.ts'
+import { findFlowList, findHeaderUtilities, findScrollport, insidePopup, switchToChatTab } from './dom.ts'
 import {
   ghostButtonHoverBackground, ghostButtonStyle, headerShareButtonActiveStyle, headerShareButtonStyle,
   headerShareHoverBackground, headerShareIconSVG, primaryButtonBackground, primaryButtonHoverBackground, primaryButtonStyle,
@@ -56,7 +56,9 @@ export class ShareController {
   private syncButton(): void {
     if (this.disposed) return
     const utilities = findHeaderUtilities()
-    if (utilities === null) {
+    // A popup (e.g. the header's "更多操作" menu) is not the resident strip: never
+    // mount the share control there, or it unmounts with the popup.
+    if (utilities === null || insidePopup(utilities)) {
       if (this.active) this.deactivate()
       this.teardownButton()
       return
@@ -93,9 +95,11 @@ export class ShareController {
     row.append(share)
     // Match the Session log button's hairline border exactly (theme-agnostic:
     // copy its computed value so both buttons always agree). The label is localized
-    // (e.g. "Session 日志"), so accept the "log" stem or the CJK 日志.
+    // (e.g. "Session 日志"), so accept the "log" stem or the CJK 日志 — but menu
+    // items rendered inside the strip's own popup match it too, and only
+    // strip-resident buttons count.
     const logBtn = Array.from(utilities.querySelectorAll('button')).find(
-      b => /session\s*(?:log|日志)/i.test((b.textContent ?? '').trim()),
+      b => /session\s*(?:log|日志)/i.test((b.textContent ?? '').trim()) && !insidePopup(b),
     )
     if (logBtn !== undefined) {
       this.logBorder = getComputedStyle(logBtn).border
